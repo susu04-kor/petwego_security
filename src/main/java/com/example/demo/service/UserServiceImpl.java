@@ -70,38 +70,37 @@ public class UserServiceImpl implements SecurityService {
 		 */	
 	}
 
-	
+	//회원정보 전체 조회
 	@Override
 	public MemberInfoVo getSelectMemberInfo(String user_id) throws Exception {
 		return loginMapperDao.getSelectMemberInfo(user_id);
 	}
-
+	//회원가입
 	@Override
 	public int setInsertMemberInfo(MemberInfoVo memberInfo) throws Exception {
 		return loginMapperDao.setInsertMemberInfo(memberInfo);
 	}
 
-	//이 메소드는 꼭 필요한지 확인작업이 필요함
 	@Override
 	public int setInsertLoginLog(LoginLogVo loginLog) throws Exception {
-		// TODO Auto-generated method stub
 		return loginMapperDao.setInsertLoginLog(loginLog);
 	}
-	
+	//아이디 중복 확인
 	@Override
 	public int idCheck(String user_id) throws Exception {
 		return loginMapperDao.idCheck(user_id);
 	}
-
-
+	//닉네임 중복 확인
 	@Override
 	public int nickCheck(String nick_name) throws Exception {
-		// TODO Auto-generated method stub
 		return loginMapperDao.nickCheck(nick_name);
 	}
-	
-	
-	
+	//회원수정
+	@Override
+	public int memberUpdate(MemberInfoVo memberInfo) throws Exception {
+		return loginMapperDao.memberUpdate(memberInfo);
+	}
+
 	
 
 }

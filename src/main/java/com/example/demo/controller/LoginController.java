@@ -43,7 +43,8 @@ public class LoginController {
    PasswordEncoder passwordEncoder;
    
    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
-    
+
+  
    //로그인
    @RequestMapping(value="/login/login")
    public ModelAndView login(HttpServletRequest request, @RequestParam(value="msg", required=false) String msg) throws Exception {
@@ -52,21 +53,11 @@ public class LoginController {
       mav.setViewName("/login/login");
       return mav;
    }
-   
-   /*
-   @RequestMapping(value = "/login", method = RequestMethod.GET)
-   public String login() {
-	   return "/login/login";
-   }
-   */
-   
-   // 로그인 post
+ /*  
+   // 로그인  이거 필요없음
 	@RequestMapping(value = "/login/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, String user_id, MemberInfoVo member, HttpSession session, RedirectAttributes rttr) throws Exception{
 		LOGGER.info("post login");
-	
-//		String referer = request.getHeader("Referer"); 
-//		request.getSession().setAttribute("prevPage", referer);
 		
 		String before_address = request.getHeader("referer");
 		
@@ -85,11 +76,9 @@ public class LoginController {
 			url = "/login/login";
 			System.out.println("로그인컨트롤러 - 로그인페이지로!");
 		}
-	
-		//return "redirect:/MainPage";
-		return "url";
+		return "/login/login";
 	}
-   
+   */
    
    @RequestMapping("/login/logout")
    public String logout(HttpServletRequest request) {

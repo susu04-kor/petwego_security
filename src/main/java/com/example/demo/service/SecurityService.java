@@ -20,10 +20,10 @@ public interface SecurityService extends UserDetailsService {
 	public int setInsertLoginLog(LoginLogVo loginLog) throws Exception;
 	//중복 아이디 체크
 	int idCheck(String user_id) throws Exception;
-	
 	//중복 닉네임 체크
 	int nickCheck(String nick_name) throws Exception;
-	
+	//회원정보 수정
+	public int memberUpdate(MemberInfoVo memberInfo) throws Exception;
 	
 	
 }
