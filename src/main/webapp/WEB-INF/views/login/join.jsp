@@ -74,7 +74,7 @@
       <div class="form-group has-feedback">
          <label class="control-label" for="birth">생년월일</label>
          <input class="form-control" type="text" name="birth" id="birth" required="required"/>
-         <span id="emailErr" class="help-block">올바른 이메일 형식이 아닙니다. 다시 입력해 주세요.</span>
+         <span id="birthErr" class="help-block">올바른 생일 형식이 아닙니다. 다시 입력해 주세요.</span>
          <span class="form-control-feedback"></span>
       </div>
       -->
@@ -113,7 +113,7 @@
            <textarea class="form-control" rows="5" id="comment"></textarea>
       </div>
       -->
-<!--       <button class="btn btn-success" type="submit">가입</button> -->
+<!--       <button class="btn btn-success" type="submit" id="btn">가입</button> -->
 <!--       <button class="btn btn-success" id="btn">가입</button> -->
    </form>
     <button class="btn btn-success" id="btn">가입</button>
@@ -122,62 +122,40 @@
 </body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
    <script type="text/javascript">
-/*
-   //아이디 입력란에 keyup 이벤트가 일어났을 때 실행할 함수
-   $("#user_id").keyup(function(){
-      //입력한 문자열을 읽어옵니다
-      var id = $("this").val();
-      //ajax로 서버에 전송합니다
-      $.ajax({
-         method:"post",
-         url:"/join/idCheck",
-         data:{inputId:id},
-         success:function(data){
-            console.log(data);
-               //사용 가능한 아이디라면
-            if(data==0){
-               $("#overlapErr").hide();
-               //성공한 상태로 바꾸는 함수 호출
-               successState("#user_id");
-            //사용 가능한 아이디가 아니라면
-            }else{
-               $("#overlapErr").show();
-               errorState("#user_id");
-            }
-         }
-      });
-   });
-  
-*/
 
+//아이디 중복체크 등 건너뛰면 가입도 안되게 처리 해야하는데!!!
+//성공적이면 "회원가입 성공!"멘트 뜨게!어떻게 하지?
 $("#btn").on("click", function(){
 	alert("회원가입 성공");
+	
 })
 
 //아이디 중복체크
 var idx = false;
-$("#idCheck").on("click", function(){ 
-	
-	 $.ajax({
-         url: "${pageContext.request.contextPath}/join/idCheck",
-         type: "GET",
-         data: {user_id:$("#user_id").val()},
-         success: function(data) {
-            //사용 가능한 아이디라면
-	    if(data==0 && $.trim($('#user_id').val()) != '' ){   
-	       idx=true;
-		   $('#user_id').attr("readonly",true);
-	       $("#overlapErr").hide();
-	       successState("#user_id");
-	       alert("사용가능한 아이디입니다.");
-	    //정규표현식을 통과하지 못하면
-	    }else{
-	       $("#overlapErr").show();
-	       errorState("#user_id");
+	$("#idCheck").on("click", function(){ 
+		
+		 $.ajax({
+	         url: "${pageContext.request.contextPath}/join/idCheck",
+	         type: "GET",
+	         data: {user_id:$("#user_id").val()},
+	         success: function(data) {
+	            //사용 가능한 아이디라면
+		    if(data==0 && $.trim($('#user_id').val()) != '' ){   
+		       idx=true;
+			   $('#user_id').attr("readonly",true);
+		       $("#overlapErr").hide();
+		       successState("#user_id");
+		       alert("사용가능한 아이디입니다.");
+		    //정규표현식을 통과하지 못하면
+		    }else{
+		       $("#overlapErr").show();
+		       errorState("#user_id");
+		       return false;
+		    }
 	    }
-    }
- })
-});
+	 })
+	});
+
 
 //닉네임 중복체크
 $("#nickCheck").on("click", function(){ 
@@ -218,7 +196,8 @@ $("#nickCheck").on("click", function(){
          errorState("#pwd");
       }
    });
-   
+
+   //비밀번호 재확인
    $("#rePwd").keyup(function(){
       var rePwd = $('#rePwd').val();
 
@@ -232,7 +211,21 @@ $("#nickCheck").on("click", function(){
       }
   	 });
 
-
+   //이메일 유효성 검사
+   $("#email").keyup(function(){
+       var email=$(this).val();
+       // 이메일 검증할 정규 표현식
+       var reg=/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     var reg = /^[0-9a-zA-Z][0-9a-zA-Z\_\-\.\+]+[0-9a-zA-Z]@[0-9a-zA-Z][0-9a-zA-Z\_\-]*[0-9a-zA-Z](\.[a-zA-Z]{2,6}){1,2}$/;
+       if(reg.test(email)){//정규표현식을 통과 한다면
+                   $("#emailErr").hide();
+                   successState("#email");
+       }else{//정규표현식을 통과하지 못하면
+                   $("#emailErr").show();
+                   errorState("#email");
+       }
+   });
+   
 
    //성공 상태로 바꾸는 함수
    function successState(sel){
@@ -265,7 +258,7 @@ $("#nickCheck").on("click", function(){
    
    
    
-
+// 아이디 중복체크 등 무언가 검사를 하지 않았을 경우엔 가입이 아예 안되도록 해야함!!!!
 
 </script>
 </html>
