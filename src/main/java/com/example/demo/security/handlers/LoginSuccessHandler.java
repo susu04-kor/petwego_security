@@ -25,25 +25,23 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 //	Authentication 객체: 인증에 성공한 사용자의 정보를 가지고 있는 객체
 
 	private String loginidname;
-//    private String defaultUrl="/";
+//	private String defaultUrl="/";
     private String defaultUrl="/MainPage";
     
     private RequestCache requestCache = new HttpSessionRequestCache();
     private RedirectStrategy redirectStratgy = new DefaultRedirectStrategy();
-    
- 
-    @Override
+
+	@Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
     	
+    	HttpSession session = request.getSession();	
     	resultRedirectStrategy(request, response, authentication);
-    	HttpSession session = request.getSession();	//세션유지!를 왜 여기서 하지?!
-    	session.setAttribute("user", authentication); 
     	clearAuthenticationAttributes(request);
-    	
+    	session.setAttribute("user", authentication); 
 
     }
- 
+	
     //에러 세션을 지우는 메서드
     private void clearAuthenticationAttributes(HttpServletRequest request) {
     	        HttpSession session = request.getSession(false);
@@ -74,8 +72,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void setLoginidname(String loginidname) {
         this.loginidname = loginidname;
     }
- 
-    public String getDefaultUrl() {
+
+
+	public String getDefaultUrl() {
         return defaultUrl;
     }
  

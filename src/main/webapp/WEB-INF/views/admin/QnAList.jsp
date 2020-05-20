@@ -14,7 +14,7 @@
     if(principal != null) {
         name = auth.getName();
     }
-%>s
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -374,8 +374,8 @@ $(function(){
 <table id="list" border="1" width="60%">
 	<tr><th>카테고리</th><th>작성자</th><th>제목</th><th>작성일자</th></tr>
 </table>
-
-<button id="add">QnA등록하기</button><br>
+<sec:authorize access="hasRole('ADMIN')"> 
+<a href="<c:url value='/admin/List' />"><button id="add">QnA등록하기</button><br></a>
 <div>
   <ul>
     <c:if test="${pageMaker.prev}">
@@ -392,7 +392,7 @@ $(function(){
   </ul>
 </div>
 </section>
-
+</sec:authorize>
 
 <section id="AddQnA">
 <h2>QnA등록</h2>

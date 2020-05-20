@@ -38,7 +38,7 @@
          sysdate,
          #{info_update_date,jdbcType=DATE},
          #{nick_name,jdbcType=VARCHAR},
-         'ROLE_ADMIN',
+         'ROLE_USER',
          'O',
          #{email,jdbcType=VARCHAR}
          )

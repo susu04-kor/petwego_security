@@ -41,6 +41,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
 import com.example.demo.security.handlers.LoginSuccessHandler;
+import com.example.demo.security.handlers.LoginSuccessHandlerAgain;
 import com.example.demo.security.handlers.MAuthenticationProvider;
 import com.example.demo.service.SecurityService;
 
@@ -89,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers( "/", "/home/**"
                 ,"/login/**", "/join/**", "/MainPage")	//  , "/admin/**"
 			.permitAll()	//권한 (user, admin)부터 주면 회원가입 불가능 
-			.antMatchers("/admin/**").hasRole("ADMIN")
+			.antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
 			.antMatchers("/user/**").hasAnyRole("USER", "ADMIN") // /user/** 라는 이름의 URL은  USER의 권한을 가진 사용자만 접근 가능
 			.anyRequest().authenticated();
 //			.antMatchers().rememberMe();
@@ -104,6 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //			.failureHandler(new AuthFailureHandler())		//로그인 실패하면 수행하는 클래스
 //			.successHandler(new AuthSuccessHandler());	//("/MainPage") //로그인 성공하면 수행하는 클래스
 			.successHandler(new LoginSuccessHandler());	//로그인 성공하면 수행하는 클래스
+//			.successHandler(new LoginSuccessHandlerAgain("/"));
 
 		http.logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/login/logout"))	//logout 요청

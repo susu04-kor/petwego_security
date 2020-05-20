@@ -65,21 +65,24 @@ public class LoginController {
 	public String login(HttpServletRequest request, String user_id, MemberInfoVo member, HttpSession session, RedirectAttributes rttr) throws Exception{
 		LOGGER.info("post login");
 	
-		String referer = (String)request.getHeader("REFERER");
-		//출처: https://kms0209.tistory.com/49 [사진기 있는 개발자]
+//		String referrer = request.getHeader("Referer"); 
+//		request.getSession().setAttribute("prevPage", referrer);
 		
 	    session.getAttribute("member");
 		MemberInfoVo login = securityService.getSelectMemberInfo(user_id);
 		boolean pwdMatch = passwordEncoder.matches(member.getPwd(), login.getPwd());
 
+		String url = null;
 		if(login != null && pwdMatch == true) {
 			session.setAttribute("member", login);
+//			url = referrer;
 		} else {
 			session.setAttribute("member", null);
 			rttr.addFlashAttribute("msg", false);
+			url = "/login/login";
 		}
-		//이전 페이지로 보내기 위한 시도 - 실패!!!
-		return "redirect:/referer";
+	
+		return "redirect:/MainPage";
 	}
    
    
