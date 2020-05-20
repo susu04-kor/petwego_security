@@ -86,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {		
 		
 		http.authorizeRequests()	//큰 범위부터 작은 범위로!
-			.antMatchers( "/", "/home/**" 
+			.antMatchers( "/", "/home/**"
                 ,"/login/**", "/join/**", "/MainPage")	//  , "/admin/**"
 			.permitAll()	//권한 (user, admin)부터 주면 회원가입 불가능 
 			.antMatchers("/admin/**").hasRole("ADMIN")
