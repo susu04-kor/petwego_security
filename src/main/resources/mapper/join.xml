@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+     <!-- namespace는 dao interface의 경로 -->
+<mapper namespace="com.example.demo.dao.LoginMapperDao">
+   <!-- id는 dao의 클래스 이름과 일치시켜야함 -->
+   <!-- resultType은 vo의 경로 -->
+   
+  <insert id="setInsertMemberInfo" parameterType="com.example.demo.vo.MemberInfoVo">
+    <!-- 회원가입 -->
+    insert into member_info(
+      user_id, 
+      pwd, 
+      tel, 
+      birth, 
+      name, 
+      address, 
+      gender, 
+      fname, 
+      intro, 
+      info_create_date, 
+      info_update_date, 
+      nick_name, 
+      user_role, 
+      status,
+      email) 
+   values(#{user_id}, 
+         #{pwd},
+         #{tel,jdbcType=VARCHAR},
+         #{birth,jdbcType=DATE},
+         #{name},
+         #{address,jdbcType=VARCHAR},
+         #{gender,jdbcType=VARCHAR},
+         #{fname,jdbcType=VARCHAR},
+         #{intro,jdbcType=VARCHAR},
+         sysdate,
+         #{info_update_date,jdbcType=DATE},
+         #{nick_name,jdbcType=VARCHAR},
+         'ROLE_ADMIN',
+         'O',
+         #{email,jdbcType=VARCHAR}
+         )
+  </insert>
+    <!-- 아이디 확인 -->
+   <select id="idCheck" resultType="int"><!-- resultType="com.example.demo.vo.MemberInfoVo" -->
+      select count(*) from member_info where user_id = #{user_id}
+   </select>
+   
+   <!-- 비밀번호 확인 -->
+   <select id="passCheck" resultType="int">
+   		select count(*) from member_info where user_id = #{user_id} and pwd = #{pwd}
+   </select>
+  
+</mapper>
