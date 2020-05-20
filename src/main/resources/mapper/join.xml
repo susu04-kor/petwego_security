@@ -49,8 +49,8 @@
    </select>
    
    <!-- 비밀번호 확인 -->
-   <select id="passCheck" resultType="int">
-   		select count(*) from member_info where user_id = #{user_id} and pwd = #{pwd}
+   <select id="nickCheck" resultType="int">
+   		select count(*) from member_info where nick_name = #{nick_name}
    </select>
   
 </mapper>

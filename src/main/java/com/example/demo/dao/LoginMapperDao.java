@@ -18,5 +18,6 @@ public interface LoginMapperDao {
 	
 	public int idCheck(String user_id);
 	
+	public int nickCheck(String nick_name);
 	
 }

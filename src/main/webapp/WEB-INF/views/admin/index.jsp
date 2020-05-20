@@ -32,9 +32,9 @@
 <hr>
 <!-- <a href="/admin/allNotice">공지사항</a><br> -->
 <!-- <a href="/admin/List">문의사항</a><br> -->
-<sec:authorize access="hasRole('ADMIN')"> 
-<li><a href="<c:url value='/MainPage' />">관리자 메뉴</a></li> 
-</sec:authorize>
+<%-- <sec:authorize access="hasRole('ADMIN')">  --%>
+<%-- <li><a href="<c:url value='/MainPage' />">관리자 메뉴</a></li>  --%>
+<%-- </sec:authorize> --%>
 <a href="#">공지사항</a><br>
 <a href="/admin/List">문의사항</a><br>
 </body>

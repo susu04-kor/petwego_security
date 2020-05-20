@@ -92,6 +92,13 @@ public class UserServiceImpl implements SecurityService {
 	public int idCheck(String user_id) throws Exception {
 		return loginMapperDao.idCheck(user_id);
 	}
+
+
+	@Override
+	public int nickCheck(String nick_name) throws Exception {
+		// TODO Auto-generated method stub
+		return loginMapperDao.nickCheck(nick_name);
+	}
 	
 	
 	

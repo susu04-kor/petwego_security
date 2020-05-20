@@ -90,7 +90,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers( "/", "/home/**"
                 ,"/login/**", "/join/**", "/MainPage")	//  , "/admin/**"
 			.permitAll()	//권한 (user, admin)부터 주면 회원가입 불가능 
-			.antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")
+			.antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")	//주소 수정 필요 모두 /admin 이라 돼있어서 수정 필요
 			.antMatchers("/user/**").hasAnyRole("USER", "ADMIN") // /user/** 라는 이름의 URL은  USER의 권한을 가진 사용자만 접근 가능
 			.anyRequest().authenticated();
 //			.antMatchers().rememberMe();
@@ -109,7 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/login/logout"))	//logout 요청
-			.logoutSuccessUrl("/admin/index") // 로그아웃하면 이 경로로 이동
+			.logoutSuccessUrl("/MainPage") // 로그아웃하면 이 경로로 이동
 			.invalidateHttpSession(true)	//세션을 초기화해요
 			.deleteCookies("JSESSEIONID")	//쿠키제거
 			.clearAuthentication(true)	//권한 정보 삭제

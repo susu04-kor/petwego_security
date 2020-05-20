@@ -47,7 +47,7 @@
          <label class="control-label" for="pwd">비밀번호</label>
          <input class="form-control" type="password" name="pwd" id="pwd" required="required"/>
          
-         <span id="pwdRegErr" class="help-block">6글자 이상 입력하세요</span>
+         <span id="pwdRegErr" class="help-block">숫자와 글자 조합으로 6글자 이상 10글자 이하를 입력하세요</span>
          <span class="glyphicon glyphicon-ok form-control-feedback"></span>
       </div>
    
@@ -93,11 +93,20 @@
          </select>
       </div>
  
-      <div class="form-group has-feedback">
+<!--       <div class="form-group has-feedback"> -->
+<!--          <label class="control-label" for="nick_name">닉네임</label> -->
+<!--          <input class="form-control" type="text" name="nick_name" id="nick_name" required="required"/> -->
+<!--          <span class="form-control-feedback"></span> -->
+<!--       </div> -->
+      <div class="form-group has feedback">
          <label class="control-label" for="nick_name">닉네임</label>
          <input class="form-control" type="text" name="nick_name" id="nick_name" required="required"/>
-         <span class="form-control-feedback"></span>
-      </div>     
+       
+         <button type="button" id="nickCheck">닉네임 중복 확인</button> 
+         <span id="overlapNick" class="help-block">이미 존재하는 닉네임입니다.</span>
+         <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+         
+      </div> 
       <!--  
       <div class="form-group">
            <label for="comment">소개글:</label>
@@ -105,9 +114,9 @@
       </div>
       -->
 <!--       <button class="btn btn-success" type="submit">가입</button> -->
-      <button class="btn btn-success" id="btn">가입</button>
+<!--       <button class="btn btn-success" id="btn">가입</button> -->
    </form>
-<!--     <button class="btn btn-success" id="btn">가입</button> -->
+    <button class="btn btn-success" id="btn">가입</button>
 </div>
 	
 </body>
@@ -145,6 +154,7 @@ $("#btn").on("click", function(){
 	alert("회원가입 성공");
 })
 
+//아이디 중복체크
 var idx = false;
 $("#idCheck").on("click", function(){ 
 	
@@ -169,70 +179,35 @@ $("#idCheck").on("click", function(){
  })
 });
 
-
-
-
-/*
-$("#idCheck").on("click", function(){ 
-
-	
-	var query = {user_id:$("#user_id").val()};
+//닉네임 중복체크
+$("#nickCheck").on("click", function(){ 
 	
 	 $.ajax({
-         url: "/join/idCheck",
-         type: "post",
-         data: query,
+         url: "${pageContext.request.contextPath}/join/nickCheck",
+         type: "GET",
+         data: {nick_name:$("#nick_name").val()},
          success: function(data) {
-            console.log(data);
             //사용 가능한 아이디라면
-	    if(data==0){   
-	       $("#overlapErr").hide();
-	       successState("#user_id");
-	       alert("사용가능한 아이디입니다.");
+	    if(data==0 && $.trim($('#nick_name').val()) != '' ){   
+	       idx=true;
+		   $('#nick_name').attr("readonly",true);
+	       $("#overlapNick").hide();
+	       successState("#nick_name");
+	       alert("사용가능한 닉네임입니다.");
 	    //정규표현식을 통과하지 못하면
 	    }else{
-	       $("#overlapErr").show();
-	       errorState("#user_id");
+	       $("#overlapNick").show();
+	       errorState("#nick_name");
 	    }
     }
  })
 });
-*/
 
-/*
- $('#check').click(function(){
-			$.ajax({
-				url: "${pageContext.request.contextPath}/idCheck.do",
-				type: "GET",
-				data:{
-					"userId":$('#userId').val()
-				},
-				success: function(data){
-					if(data == 0 && $.trim($('#userId').val()) != '' ){
-						idx=true;
-						$('#userId').attr("readonly",true);
-						var html="<tr><td colspan='3' style='color: green'>사용가능</td></tr>";
-						$('#idCheck').empty();
-						$('#idCheck').append(html);
-					}else{
-
-						var html="<tr><td colspan='3' style='color: red'>사용불가능한 아이디 입니다.</td></tr>";
-						$('#idCheck').empty();
-						$('#idCheck').append(html);
-					}
-				},
-				error: function(){
-					alert("서버에러");
-				}
-			});
-		});
- */
-
-    
+//비밀번호 유효성 검사    
    $("#pwd").keyup(function(){   //오류 수정 필요! - 1. 비밀번호가 8글자 이하인데 에러메시지가 뜨지 않고 2. 비밀번호가 일치해도 오류 메시지 뜸
       var pwd = $('#pwd').val();
       //비밀번호를 검증할 정규 표현식
-      var reg = /^[A-Za-z0-9]{6,12}$/;
+      var reg = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{6,10}$/;
       //정규표현식을 통과한다면
       if(reg.test(pwd)){   //test() - 찾는 문자열이, 들어있는지 아닌지를 알려줍니다 / 문장 안에 찾으려는 문자가 들어있으면, 결과는 "true"
          $("#pwdRegErr").hide();
@@ -257,8 +232,6 @@ $("#idCheck").on("click", function(){
       }
   	 });
 
-//	})
-//})
 
 
    //성공 상태로 바꾸는 함수
