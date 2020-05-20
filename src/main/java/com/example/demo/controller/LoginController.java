@@ -65,8 +65,10 @@ public class LoginController {
 	public String login(HttpServletRequest request, String user_id, MemberInfoVo member, HttpSession session, RedirectAttributes rttr) throws Exception{
 		LOGGER.info("post login");
 	
-//		String referrer = request.getHeader("Referer"); 
-//		request.getSession().setAttribute("prevPage", referrer);
+//		String referer = request.getHeader("Referer"); 
+//		request.getSession().setAttribute("prevPage", referer);
+		
+		String before_address = request.getHeader("referer");
 		
 	    session.getAttribute("member");
 		MemberInfoVo login = securityService.getSelectMemberInfo(user_id);
@@ -75,14 +77,17 @@ public class LoginController {
 		String url = null;
 		if(login != null && pwdMatch == true) {
 			session.setAttribute("member", login);
-//			url = referrer;
+			url = before_address;
+			System.out.println("로그인컨트롤러 - 이전페이지로!");
 		} else {
 			session.setAttribute("member", null);
 			rttr.addFlashAttribute("msg", false);
 			url = "/login/login";
+			System.out.println("로그인컨트롤러 - 로그인페이지로!");
 		}
 	
-		return "redirect:/MainPage";
+		//return "redirect:/MainPage";
+		return "url";
 	}
    
    
@@ -109,28 +114,9 @@ public class LoginController {
       return "login/error";
    }
    */
-   
+  
    
    //아이디 중복체크
-   /*
-   @PostMapping(value="/join/idCheck")
-   @ResponseBody
-   public int idCheck(HttpServletRequest request) throws Exception{
-      LOGGER.info("post idCheck");
-      int result = 0;
-      String user_id = request.getParameter("user_id");
-      int idUseYn = securityService.idCheck(user_id);
-      
-      if(idUseYn > 0) {   //아이디 있을 경우
-         result = -1;
-      }else {
-         result = 0;
-      }
-      
-      return result;
-   }
-   */
-   
    @RequestMapping(value="/join/idCheck", method=RequestMethod.GET, produces="application/text; charset=utf8")
    @ResponseBody
    public String idCheck(HttpServletRequest request) throws Exception{
@@ -147,7 +133,26 @@ public class LoginController {
       return Integer.toString(result);
 	
    }
-
+   
+   //닉네임 중복체크
+   @RequestMapping(value="/join/nickCheck", method=RequestMethod.GET, produces="application/text; charset=utf8")
+   @ResponseBody
+   public String nickCheck(HttpServletRequest request) throws Exception{
+      LOGGER.info("post nickCheck");
+      int result = 0;
+      String nick_name = request.getParameter("nick_name");
+      int nickUseYn = securityService.nickCheck(nick_name);
+      
+      if(nickUseYn > 0) {   //아이디 있을 경우
+         result = -1;
+      }else {
+         result = 0;
+      }
+      return Integer.toString(result);
+	
+   }
+   
+   
    //회원가입 페이지 이동
    @RequestMapping("/join/join")
    public String join(HttpServletRequest request) {
