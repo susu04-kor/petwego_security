@@ -1,8 +1,5 @@
 package com.example.demo.controller;
 
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,22 +10,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.service.SecurityService;
+//import com.example.demo.util.AopLog.NoLogging;
 import com.example.demo.vo.MemberInfoVo;
 
 @Controller
@@ -54,7 +47,7 @@ public class LoginController {
       return mav;
    }
  /*  
-   // 로그인  이거 필요없음
+   // 로그인  이거 필요없음...? 아마두?
 	@RequestMapping(value = "/login/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, String user_id, MemberInfoVo member, HttpSession session, RedirectAttributes rttr) throws Exception{
 		LOGGER.info("post login");
@@ -80,12 +73,13 @@ public class LoginController {
 	}
    */
    
+   //로그아웃
    @RequestMapping("/login/logout")
    public String logout(HttpServletRequest request) {
       return "/login/logout";
    }
  
-   
+   //로그아웃
    @RequestMapping(value = "/login/logout", method = RequestMethod.POST) 
    public String logout(HttpServletRequest request, HttpServletResponse response) throws Exception { 
       Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
@@ -105,7 +99,8 @@ public class LoginController {
    */
   
    
-   //아이디 중복체크
+   //아이디 중복 확인
+//   @NoLogging//
    @RequestMapping(value="/join/idCheck", method=RequestMethod.GET, produces="application/text; charset=utf8")
    @ResponseBody
    public String idCheck(HttpServletRequest request) throws Exception{
@@ -123,7 +118,8 @@ public class LoginController {
 	
    }
    
-   //닉네임 중복체크
+   //닉네임 중복 확인
+//   @NoLogging//
    @RequestMapping(value="/join/nickCheck", method=RequestMethod.GET, produces="application/text; charset=utf8")
    @ResponseBody
    public String nickCheck(HttpServletRequest request) throws Exception{
@@ -151,11 +147,8 @@ public class LoginController {
    //회원가입
    @RequestMapping("/join/insert")
    public String setInertMemberInfo(HttpServletResponse res, HttpServletRequest req) throws Exception{
-      
-         
-      
+   
       //memberInfo.setPwd(pass);
-      
       //DB에는 Date타입, vo에는 String 타입, 가져올 땐 다시 TO_CHAR
       
         String user_id = req.getParameter("user_id");
@@ -190,8 +183,22 @@ public class LoginController {
       }
    }
    
+   /*
    
-  
+   @RequestMapping(value="/member/update", method=RequestMethod.GET)
+   public String memberUpdate(HttpRequest request) throws Exception {
+	   return "/member/updateOk";
+   }
+   
+   @RequestMapping(value="/member/updateOk", method=RequestMethod.POST)
+   public String memberUpdateOk(HttpSession session, HttpRequest request) throws Exception {
+	   
+	   //위처럼 다 받아오기
+	   
+	   securityService.memberUpdate(member);
+	   
+   }
+  */
    
    
    

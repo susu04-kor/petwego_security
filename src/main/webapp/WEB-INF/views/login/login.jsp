@@ -16,8 +16,93 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <!-- 부가적인 테마 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<style type="text/css">
+.popup_btn a {
+  display: inline-block;
+  padding: 20px;
+  background: darkred;
+  color: #fff;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 900;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  position: fixed;
+  width: 60%;
+  padding: 10px;
+  max-width: 500px;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, .9);
+  /* "delay" the visibility transition */
+  -webkit-transition: opacity .5s, visibility 0s linear .5s;
+  transition: opacity .5s, visibility 0s linear .5s;
+  z-index: 1;
+}
+
+.popup:target {
+  visibility: visible;
+  opacity: 1;
+  /* cancel visibility transition delay */
+  -webkit-transition-delay: 0s;
+  transition-delay: 0s;
+}
+
+.popup-close {
+  position: absolute;
+  padding: 10px;
+  max-width: 500px;
+  border-radius: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, .9);
+}
+
+.popup .close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  padding: 5px;
+  color: #000;
+  transition: color .3s;
+  font-size: 2em;
+  line-height: .6em;
+  font-weight: bold;
+}
+
+.popup .close:hover {
+  color: #00E5EE;
+}
+</style>
 </head>
 <body>
+<div class="popup_btn">
+  <a href="#pop01">팝업</a>
+</div>
+
+<div id="pop01" class="overlay">
+<div class="popup">
+<a href="#none" class="close">&times;</a>
+
 <div class="container">
 	<div class="row" style="padding-top:10%">
 		<div class="col-md-4"></div>
@@ -59,6 +144,9 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+</div>
 </div>
 </body>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js">
