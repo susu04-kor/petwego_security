@@ -51,6 +51,11 @@ import com.example.demo.service.SecurityService;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	//야호야호야호야호야호
+	
+	
+	
+	
 //	@Autowired
 //	AuthProvider authProvider;
 	
