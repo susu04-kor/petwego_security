@@ -90,9 +90,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers( "/", "/home/**"
                 ,"/login/**", "/join/**", "/MainPage")	//  , "/admin/**"
 			.permitAll()	//권한 (user, admin)부터 주면 회원가입 불가능 
-			.antMatchers("/admin/**").hasAnyRole("ADMIN", "USER")	//주소 수정 필요 모두 /admin 이라 돼있어서 수정 필요
-			.antMatchers("/user/**").hasAnyRole("USER", "ADMIN") // /user/** 라는 이름의 URL은  USER의 권한을 가진 사용자만 접근 가능
+			.antMatchers("/admin/**", "/management/**").hasAnyRole("ADMIN")	//주소 수정 필요 모두 /admin 이라 돼있어서 수정 필요
+			.antMatchers("/user/**", "/mypage/**", "/comment/**", "/board/**",
+					"/customerservice/**", "/pcomment/**",
+					"/pic_board/**", "/together/**").hasAnyRole("USER", "ADMIN") // /user/** 라는 이름의 URL은  USER의 권한을 가진 사용자만 접근 가능
 			.anyRequest().authenticated();
+//			.and()
+//			.oauth2Login();	//sns 로그인을 위한 설정
 //			.antMatchers().rememberMe();
 		
 //		http.csrf().disable();

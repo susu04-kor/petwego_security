@@ -51,8 +51,7 @@ public class UserServiceImpl implements SecurityService {
 				memberInfo.getAddress(), memberInfo.getGender(), memberInfo.getFname(), 
 				memberInfo.getIntro(), memberInfo.getInfo_create_date(), 
 				memberInfo.getInfo_create_date(), memberInfo.getNick_name(), 
-				memberInfo.getUser_role(), memberInfo.getStatus(), 
-				memberInfo.getEmail(), authorities);
+				memberInfo.getUser_role(), memberInfo.getEmail(), authorities);
 	
 		return member;
 		

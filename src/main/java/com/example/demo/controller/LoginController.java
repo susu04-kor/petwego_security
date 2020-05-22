@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 
+import java.io.Console;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.service.SecurityService;
+import com.example.demo.util.AopLog.NoLogging;
 //import com.example.demo.util.AopLog.NoLogging;
 import com.example.demo.vo.MemberInfoVo;
 
@@ -37,7 +41,7 @@ public class LoginController {
    
    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
-  
+ 
    //로그인
    @RequestMapping(value="/login/login")
    public ModelAndView login(HttpServletRequest request, @RequestParam(value="msg", required=false) String msg) throws Exception {
@@ -46,7 +50,10 @@ public class LoginController {
       mav.setViewName("/login/login");
       return mav;
    }
- /*  
+   
+
+   
+ /*
    // 로그인  이거 필요없음...? 아마두?
 	@RequestMapping(value = "/login/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request, String user_id, MemberInfoVo member, HttpSession session, RedirectAttributes rttr) throws Exception{
@@ -71,7 +78,7 @@ public class LoginController {
 		}
 		return "/login/login";
 	}
-   */
+*/   
    
    //로그아웃
    @RequestMapping("/login/logout")
@@ -100,7 +107,7 @@ public class LoginController {
   
    
    //아이디 중복 확인
-//   @NoLogging//
+   @NoLogging//
    @RequestMapping(value="/join/idCheck", method=RequestMethod.GET, produces="application/text; charset=utf8")
    @ResponseBody
    public String idCheck(HttpServletRequest request) throws Exception{
@@ -119,7 +126,7 @@ public class LoginController {
    }
    
    //닉네임 중복 확인
-//   @NoLogging//
+   @NoLogging//
    @RequestMapping(value="/join/nickCheck", method=RequestMethod.GET, produces="application/text; charset=utf8")
    @ResponseBody
    public String nickCheck(HttpServletRequest request) throws Exception{
@@ -167,11 +174,10 @@ public class LoginController {
         String info_update_date = req.getParameter("info_update_date");
         String nick_name = req.getParameter("nick_name");
         String user_role = req.getParameter("user_role");
-        String status = req.getParameter("status");
         String email = req.getParameter("email");
       
       MemberInfoVo member = new MemberInfoVo(user_id, pass, tel, birth, name, address, gender,
-    		  fname, intro, info_create_date, info_update_date, nick_name, user_role, status, email);
+    		  fname, intro, info_create_date, info_update_date, nick_name, user_role, email);
       
       int re = securityService.setInsertMemberInfo(member);
       
@@ -183,22 +189,65 @@ public class LoginController {
       }
    }
    
-   /*
+/*   
    
    @RequestMapping(value="/member/update", method=RequestMethod.GET)
-   public String memberUpdate(HttpRequest request) throws Exception {
+   public String memberUpdate(HttpServletRequest request) throws Exception {
 	   return "/member/updateOk";
    }
    
    @RequestMapping(value="/member/updateOk", method=RequestMethod.POST)
-   public String memberUpdateOk(HttpSession session, HttpRequest request) throws Exception {
+   public String memberUpdateOk(HttpSession session, HttpServletRequest req) throws Exception {
+	   Authentication authentication = (Authentication) session.getAttribute("user");
+       MemberInfoVo user = (MemberInfoVo) authentication.getPrincipal();
+       
+       String user_id = user.getUser_id();
+		
+//     String user_id = req.getParameter("user_id");
+       String pwd = user.getPwd();
+       System.out.println("원래 비밀번호 : " + pwd);
+       
+       String pwd2 = req.getParameter("pwd");
+       System.out.println("변경할 비밀번호 : " + pwd2);
+       
+       String pass = passwordEncoder.encode(pwd2); 
+       System.out.println("변경할, 암호화한 비밀번호 : " + pass);
+       
+       String tel = req.getParameter("tel");
+       String birth = req.getParameter("birth");
+       String name = req.getParameter("name");
+       String address = req.getParameter("address");
+       String gender = req.getParameter("gender");
+       String fname = req.getParameter("fname");
+       String intro = req.getParameter("intro");
+       String info_create_date = req.getParameter("info_create_date");
+       String info_update_date = req.getParameter("info_update_date");
+       String nick_name = req.getParameter("nick_name");
+       String user_role = req.getParameter("user_role");
+       String email = req.getParameter("email");
+
+       int re = 0;
+	   if(passwordEncoder.matches(pwd, pass)) {
+	     System.out.println("비밀번호 일치");
+	     MemberInfoVo member = new MemberInfoVo(user_id, pass, tel, birth, name, address, gender,
+	     		  fname, intro, info_create_date, info_update_date, nick_name, user_role, email);
+	     re = securityService.memberUpdate(member);
+	   }else {
+		   System.out.println("비밀번호 불일치");
+		   MemberInfoVo member = new MemberInfoVo(user_id, pwd, tel, birth, name, address, gender,
+				   fname, intro, info_create_date, info_update_date, nick_name, user_role, email);
+		   re = securityService.memberUpdate(member);
+	   }  
 	   
-	   //위처럼 다 받아오기
 	   
-	   securityService.memberUpdate(member);
-	   
+	   if( re > 0) {
+		   session.invalidate();
+		   return "/";
+	   }else {
+		   return "/";
+	   }
    }
-  */
+ */ 
    
    
    

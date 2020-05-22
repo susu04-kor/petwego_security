@@ -9,16 +9,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.util.AopLog.NoLogging;
 import com.example.demo.vo.MemberInfoVo;
 
+//import com.example.demo.util.AopLog.NoLogging;
+
+//민아) 5/19, 메인페이지 @NoLogging 처리 
 @RestController
 public class MainController {
 	
 	//사이트 메인페이지
+	@NoLogging
 	@RequestMapping("/MainPage")
 	public static ModelAndView mainPage(HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/user/main");
+		mav.setViewName("/main");
 		HttpSession session = request.getSession();
 		if(session.getAttribute("user") != null) {
 	         Authentication authentication = (Authentication) session.getAttribute("user");
@@ -27,6 +32,7 @@ public class MainController {
 	         System.out.println(details.getSessionId() + "\t" + details.getRemoteAddress());
 	         System.out.println(user.getUser_id());
 	      }
+		
 		return mav;
 	}
 }

@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -82,14 +81,13 @@ private static final long serialVersionUID = 1L;
 	private String info_update_date;		//db엔 Date
 	private String nick_name;
 	private String user_role;
-	private String status;
 	private String email;
 	
 	
 	public MemberInfoVo(
 			String user_id, String pwd, String tel, String birth, String name, String address, String gender,
 			String fname, String intro, String info_create_date, String info_update_date, String nick_name,
-			String user_role, String status, String email) {
+			String user_role, String email) {
 		super(user_id, pwd, new ArrayList<GrantedAuthority>());	//보낼 땐 ArrayList - UserServiceImpl에서 if(id=null) 구문에서 사용하기 위해 임시로 만들어주기 
 		this.user_id = user_id;									//그냥 원래 생성자 모양대로 보내면 null 값으로 가게 됨
 		this.pwd = pwd;
@@ -104,14 +102,13 @@ private static final long serialVersionUID = 1L;
 		this.info_update_date = info_update_date;
 		this.nick_name = nick_name;
 		this.user_role = user_role;
-		this.status = status;
 		this.email = email;
 	}
 
 	public MemberInfoVo(
 			String user_id, String pwd, String tel, String birth, String name, String address, String gender,
 			String fname, String intro, String info_create_date, String info_update_date, String nick_name,
-			String user_role, String status, String email, List<GrantedAuthority> authorities) {	//받을 때는 List로 - UserServiceImpl에서 사용하기 위해!
+			String user_role, String email, List<GrantedAuthority> authorities) {	//받을 때는 List로 - UserServiceImpl에서 사용하기 위해!
 		super(user_id, pwd, authorities);
 		this.user_id = user_id;
 		this.pwd = pwd;
@@ -126,7 +123,6 @@ private static final long serialVersionUID = 1L;
 		this.info_update_date = info_update_date;
 		this.nick_name = nick_name;
 		this.user_role = user_role;
-		this.status = status;
 		this.email = email;
 	}
 
